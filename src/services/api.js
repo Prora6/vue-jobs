@@ -11,7 +11,6 @@ export async function fetchVacancies() {
                 placetitle: decodeText(vacancy.placetitle),
                 directiontitle: decodeText(vacancy.directiontitle),
                 clientname: decodeText(vacancy.clientname),
-                // Декодируем другие необходимые поля
             };
         });
         return vacancies;
