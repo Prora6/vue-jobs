@@ -4,16 +4,21 @@
 
     <div :class="['container', { blurred: loading }]">
       <div class="sidebar">
+        <h3 class="filter-title">Поиск по категориям:</h3>
         <Filter :vacancies="vacancies" @filter="applyFilter" />
       </div>
-      <div class="content">
-        <Card
-            v-for="vacancy in filteredVacancies"
-            :key="vacancy.vacancy_id"
-            :vacancy="vacancy"
-            @apply="openPopup"
-        />
+      <div>
+        <h3 class="cards-title">Нашли {{filteredVacancies.length}} предложений для тебя</h3>
+        <div class="content">
+          <Card
+              v-for="vacancy in filteredVacancies"
+              :key="vacancy.vacancy_id"
+              :vacancy="vacancy"
+              @apply="openPopup"
+          />
+        </div>
       </div>
+
     </div>
     <PopupForm v-if="showPopup" @close="showPopup = false" />
   </div>
@@ -108,6 +113,17 @@ export default {
   margin-left: 40px;
 }
 
+.filter-title {
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 40px;
+  margin-bottom: 20px;
+}
+
+.cards-title {
+  font-size: 30px;
+  margin-left: 40px;
+}
 @media (max-width: 1140px) {
   .content {
     grid-template-columns: 1fr;

@@ -19,7 +19,6 @@
         </template>
       </multiselect>
     </div>
-
     <div
         class="multiselect-container"
         :class="{ disabled: selectedRegion.length === 0 }"
@@ -43,7 +42,6 @@
         </template>
       </multiselect>
     </div>
-
     <div
         class="multiselect-container"
         :class="{ disabled: selectedCity.length === 0 }"
@@ -66,11 +64,16 @@
         </template>
       </multiselect>
     </div>
+
+    <div class="filter-buttons">
+      <button class="apply" @click="applyFilters">Применить</button>
+      <span class="clear" @click="clearFilters">Очистить</span>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref, watch, computed } from 'vue';
+import { ref, computed } from 'vue';
 import Multiselect from 'vue-multiselect';
 
 export default {
@@ -132,11 +135,6 @@ export default {
       ];
     });
 
-    watch(
-        [selectedRegion, selectedCity, selectedOrganization],
-        emitFilter
-    );
-
     function emitFilter() {
       emit('filter', {
         regions: selectedRegion.value,
@@ -148,10 +146,19 @@ export default {
     function onRegionChange() {
       selectedCity.value = [];
       selectedOrganization.value = [];
-      emitFilter();
     }
 
     function onCityChange() {
+      selectedOrganization.value = [];
+    }
+
+    function applyFilters() {
+      emitFilter();
+    }
+
+    function clearFilters() {
+      selectedRegion.value = [];
+      selectedCity.value = [];
       selectedOrganization.value = [];
       emitFilter();
     }
@@ -165,6 +172,8 @@ export default {
       organizations,
       onRegionChange,
       onCityChange,
+      applyFilters,
+      clearFilters,
     };
   },
 };
@@ -247,4 +256,39 @@ export default {
   scrollbar-width: thin;
   scrollbar-color: #888 #f1f1f1;
 }
+
+.filter-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.apply {
+  padding: 15px;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
+  cursor: pointer;
+  background: #fd7f23;
+  border: 1px solid #fd7f23;
+  color: white;
+}
+
+.apply:hover {
+  background: transparent;
+  color: #fd7f23;
+}
+
+.clear {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  cursor: pointer;
+  color: #8b8d94;
+  text-decoration: underline;
+  text-align: center;
+}
+
 </style>
